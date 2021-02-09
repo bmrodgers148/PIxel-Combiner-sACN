@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<br>
+<div class="card">
+<form method='POST'> {% csrf_token %}
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            {{ form.universeType|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form.universeNumber|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-3">
+            {{ form.pixelOutUni|as_crispy_field }}
+        </div>
+        <div class="form-group col-md-1 my-auto ">
+            <div class="form-row my-auto justify-content-center">
+                {{ form.multicast|as_crispy_field }} 
+            </div>
+        </div>
+        <div class="form-group col-md-1 my-auto justify-content-center">
+            <button type='submit' class="btn btn-primary">Save Universe</button>
+        </div>
+    </div>
+</form>
+</div>
+<br>
+{% include 'universeTable.html' %}
+{% endblock %}

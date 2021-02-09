@@ -1,0 +1,35 @@
+<div class="column">
+    <div class="card card-body">
+        <h1 class="display-5">Universes</h1>
+        <table class="table">
+            <tr>
+                <th>Universe Type</th>
+                <th>Universe Number</th>
+                <th>Output Number</th>
+                <th>Multicast</th>
+                <th>Status</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for i in universes %}
+            <tr>
+                <td>{{i.get_universeType_display}}</td>
+                <td>{{i.universeNumber}}</td>
+                {% if i.pixelOutUni > 0 %}
+                <td>{{i.pixelOutUni}}</td>
+                {%else%}
+                <td></td>
+                {%endif%}
+                <td>{{i.multicast}}</td>
+                {% if i.available %}
+                <td>Available</td>
+                {%else%}
+                <td>Not Available</td>
+                {%endif%}
+                <td><a class="btn btn-sm btn-info" href="{%url 'universe' i.id %}"> Edit </a></td>
+				<td><a class="btn btn-sm btn-danger" href="{%url 'delete_universe' i.id %}"> Delete </a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

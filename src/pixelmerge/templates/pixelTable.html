@@ -1,0 +1,31 @@
+<div class="column">
+    <div class="card card-body">
+        <h1 class="display-5">Pixels</h1>
+        <table class="table">
+            <tr>
+                <th>Pixel Type</th>
+                <th>Input Universe</th>
+                <th>Input Address</th>
+                <th>Output Universe</th>
+                <th>Output Address</th>
+                <th>Fixture Number</th>
+                <th>Pixel Number</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for i in pixels %}
+            <tr>
+                <td>{{i.pixelType}}</td>
+                <td>{{i.inputUniverse}}</td>
+                <td>{{i.inputAddress}}</td>
+                <td>{{i.outputUniverse}}</td>
+                <td>{{i.outputAddress}}</td>
+                <td>{{i.fixtureNum}}</td>
+                <td>{{i.pixelNum}}</td>
+                <td><a class="btn btn-sm btn-info" href="{% url 'pixel' i.id %}"> Edit </a></td>
+				<td><a class="btn btn-sm btn-danger" href="{% url 'delete_pixel' i.id %}"> Delete </a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
