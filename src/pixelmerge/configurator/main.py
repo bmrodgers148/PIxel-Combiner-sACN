@@ -122,7 +122,7 @@ class universe():
     def updateDMXData(self):
         sender[self.number].dmx_data = self.dmxdata
 
-def createUniverses(universeModel, maxUniverses):
+def createUniverses(universeModel, maxUniverses, priority):
 
     global universes
     universes = []
