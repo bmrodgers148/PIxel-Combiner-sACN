@@ -13,7 +13,7 @@ numOfPixeluniverses = 96
 consoleEnable = False
 unicastdest = '127.0.0.1'
 
-def startsACN(universeModel, pixelModel, maxUniverses, consoleEnableChannel, unicastIP):
+def startsACN(universeModel, pixelModel, maxUniverses, consoleEnableChannel, unicastIP, priority):
     global receiver, sender, running, consoleEnableCh, unicastdest
     consoleEnableCh = consoleEnableChannel
     unicastdest = unicastIP
@@ -22,7 +22,7 @@ def startsACN(universeModel, pixelModel, maxUniverses, consoleEnableChannel, uni
     
     receiver.start()
     sender.start()
-    createUniverses(universeModel, maxUniverses)
+    createUniverses(universeModel, maxUniverses, priority)
     createMap(pixelModel)
     running = True
 
@@ -44,13 +44,14 @@ def refreshUniverse():
     return availableUniverses
     
 class universe():
-    def __init__(self, number, mode, multicast=True, outputUni=0):
+    def __init__(self, number, mode, multicast=True, outputUni=0, priority=100):
         #possible modes: ['ctrlIn', 'consoleIn', 'pixelIn', 'pixelOut']
         self.number = number
         self.pixeloutputuni = outputUni
         self.mode = mode
         self.dmxdata = []
         self.newDMX = []
+        self.priority = priority
 
         
         #print(self.number, self.mode)
@@ -80,6 +81,7 @@ class universe():
 
         elif self.mode == 'pixelOut':
             sender.activate_output(self.number)
+            sender[self.number].priority = self.priority
             if multicast:
                 sender[self.number].multicast = True
             else:
@@ -129,7 +131,7 @@ def createUniverses(universeModel, maxUniverses):
     #create universes
 
     for uni in universeModel:
-        universes[uni.universeNumber]=universe(uni.universeNumber, uni.universeType, uni.multicast)
+        universes[uni.universeNumber]=universe(uni.universeNumber, uni.universeType, uni.multicast, priority=priority)
     
 def createMap(pixelModel):
     for pixel in pixelModel:

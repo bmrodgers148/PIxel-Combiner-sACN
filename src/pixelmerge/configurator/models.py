@@ -43,3 +43,4 @@ class AppSettings(models.Model):
     unicastIP = models.CharField(max_length=15)
     maxUniverses = models.IntegerField()
     consoleEnableChannel = models.IntegerField()
+    outputPriority = models.IntegerField(default=100)

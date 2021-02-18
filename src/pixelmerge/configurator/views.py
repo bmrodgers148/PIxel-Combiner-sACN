@@ -86,7 +86,8 @@ def start_sACN_view(request, *args, **kwargs):
     consoleEnableChannel = settings.consoleEnableChannel
     maxUniverses = settings.maxUniverses
     unicastIP = settings.unicastIP
-    startsACN(Universe.objects.all(), Pixel.objects.all(), maxUniverses, consoleEnableChannel, unicastIP)
+    priority = settings.outputPriority
+    startsACN(Universe.objects.all(), Pixel.objects.all(), maxUniverses, consoleEnableChannel, unicastIP, priority)
     running = True
     availableUnis = refreshUniverse()
     unis = Universe.objects.all()
