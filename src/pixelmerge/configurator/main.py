@@ -31,8 +31,7 @@ def stopsACN():
     receiver.stop()
     sender.stop()
     running = False
-    print("stopped")
-    
+    print("stopped")   
 
 def refreshUniverse():
     availableUniverses = []
@@ -116,8 +115,9 @@ class universe():
 
     def pixelCallback(self, packet):
         if not consoleEnable:
-            dmx = packet.dmxdata
-            sender[self.pixeloutputuni].dmx_data = dmx
+            dmx = packet.dmxData
+            if sender[self.pixeloutputuni] is not None:
+                sender[self.pixeloutputuni].dmx_data = dmx
 
     def updateDMXData(self):
         sender[self.number].dmx_data = self.dmxdata
