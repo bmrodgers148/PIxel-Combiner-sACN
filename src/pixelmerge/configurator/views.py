@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
+from django.http import HttpResponse
+import csv, io
 
 from .models import Pixel, Universe
 from .forms import *
@@ -48,7 +50,7 @@ def delete_pixel_view(request, pk):
     if len(Pixel.objects.all()) > 1:
         pixel = Pixel.objects.get(id=pk)
         pixel.delete()
-    return redirect('/pixel/New/')
+    return redirect('/pixel/New')
 
 def universe_view(request, pk, *args, **kwargs):
     if pk == 'New':
@@ -120,3 +122,78 @@ def refresh_universes(request, *args, **kwargs):
             u.available = False
         u.save()
     return redirect('../')
+
+def export_data(request, pk, *args, **kwargs):
+    response = HttpResponse(content_type='text/csv')
+    writer=csv.writer(response)
+
+    if pk == 'universe':
+        writer.writerow(['Universe Type', 'Universe Number', 'Output Number', 'Multicast'])
+        for uni in Universe.objects.all().values_list('universeType', 'universeNumber', 'pixelOutUni', 'multicast'):
+            writer.writerow(uni)
+
+        response['Content-Disposition'] = 'attachment; filename="universe_export.csv"'
+        return response
+
+    if pk == 'pixel':
+        writer.writerow(['Type','In Universe','In Address','Out Universe','Out Address','Fixture Number','Pixel Number'])
+        for pixel in Pixel.objects.all().values_list('pixelType','inputUniverse','inputAddress','outputUniverse','outputAddress','fixtureNum','pixelNum'):
+            writer.writerow(pixel)
+
+        response['Content-Disposition'] = 'attachment; filename="pixel_export.csv"'
+        return response
+    
+    return redirect('../')
+
+def pixel_upload(request):
+    if request.method == "GET":
+        return redirect(settings_view)
+    
+    csv_file = request.FILES['file']
+    if not csv_file.name.endswith('.csv'):
+        return redirect(settings_view)
+    
+    Pixel.objects.all().delete()
+
+    data_set = csv_file.read().decode('UTF-8')
+
+    io_string = io.StringIO(data_set)
+    next(io_string)
+    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+        print(column)
+        _, created = Pixel.objects.update_or_create(
+            pixelType=column[0],
+            inputUniverse=int(column[1]),
+            inputAddress=int(column[2]),
+            outputUniverse=int(column[3]),
+            outputAddress=int(column[4]),
+            fixtureNum=int(column[5]),
+            pixelNum=int(column[6])
+        )
+    return redirect(settings_view)
+
+def universe_upload(request):
+    if request.method == "GET":
+        return redirect(settings_view)
+    
+    csv_file = request.FILES['file']
+    if not csv_file.name.endswith('.csv'):
+        return redirect(settings_view)
+    
+    Universe.objects.all().delete()
+
+    data_set = csv_file.read().decode('UTF-8')
+
+    io_string = io.StringIO(data_set)
+    next(io_string)
+    for column in csv.reader(io_string, delimiter=',', quotechar="|"):
+        print(column)
+        _, created = Universe.objects.update_or_create(
+            universeType=column[0],
+            universeNumber=int(column[1]),
+            pixelOutUni=int(column[2]),
+            multicast=bool(column[3])
+        )
+    return redirect(settings_view)
+    
+    

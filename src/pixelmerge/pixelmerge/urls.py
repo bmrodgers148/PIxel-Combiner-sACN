@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from configurator.views import (home_view, settings_view, pixel_view, delete_pixel_view, 
-universe_view, delete_universe_view, refresh_universes, start_sACN_view, stop_sACN_view)
+from configurator.views import (
+    home_view, settings_view, pixel_view, delete_pixel_view, universe_view,
+    delete_universe_view, refresh_universes, start_sACN_view, stop_sACN_view, 
+    export_data, pixel_upload, universe_upload)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,9 +26,12 @@ urlpatterns = [
     path('settings/', settings_view, name="settings"),
     path('pixel/<str:pk>/', pixel_view, name="pixel"),
     path('delete_pixel/<str:pk>/', delete_pixel_view, name="delete_pixel"),
-    path('universe/<str:pk>', universe_view, name="universe"),
+    path('universe/<str:pk>/', universe_view, name="universe"),
     path('delete_universe/<str:pk>/', delete_universe_view, name="delete_universe"),
     path('refresh_universes', refresh_universes, name="refresh_universes"),
     path('stop_sacn', stop_sACN_view, name="stop_sacn"),
     path('start_sacn', start_sACN_view, name="start_sacn"),
+    path('export/<str:pk>/', export_data, name="export"),
+    path('pixel_upload', pixel_upload, name="pixelupload"),
+    path('universe_upload', universe_upload, name="uniupload"),
 ]

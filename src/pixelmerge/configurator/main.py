@@ -31,7 +31,8 @@ def stopsACN():
     receiver.stop()
     sender.stop()
     running = False
-    print("stopped")   
+    print("stopped")
+    
 
 def refreshUniverse():
     availableUniverses = []
@@ -53,7 +54,7 @@ class universe():
         self.priority = priority
 
         
-        #print(self.number, self.mode)
+        print(self.number, self.mode, self.pixeloutputuni)
         for i in range(513):
             self.dmxdata.append(0)
 
@@ -96,8 +97,8 @@ class universe():
             consoleEnable = True
         else:
             consoleEnable = False
-        print(packet.universe)
-        print(consoleEnable)
+        #print(packet.universe)
+        #print(consoleEnable)
 
     def consoleCallback(self, packet):
         if consoleEnable and (map != None):
@@ -116,8 +117,12 @@ class universe():
     def pixelCallback(self, packet):
         if not consoleEnable:
             dmx = packet.dmxData
-            if sender[self.pixeloutputuni] is not None:
+            try:
                 sender[self.pixeloutputuni].dmx_data = dmx
+                #print("Pixel Out")
+            except Exception as e:
+                #print(e)
+                pass
 
     def updateDMXData(self):
         sender[self.number].dmx_data = self.dmxdata
@@ -131,7 +136,7 @@ def createUniverses(universeModel, maxUniverses, priority):
     #create universes
 
     for uni in universeModel:
-        universes[uni.universeNumber]=universe(uni.universeNumber, uni.universeType, uni.multicast, priority=priority)
+        universes[uni.universeNumber]=universe(uni.universeNumber, uni.universeType, uni.multicast, outputUni=uni.pixelOutUni, priority=priority)
     
 def createMap(pixelModel):
     for pixel in pixelModel:

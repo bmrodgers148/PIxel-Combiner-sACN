@@ -25,5 +25,111 @@
             </div>
         </form>
     </div>
+    <div class="row">
+        <div class=" col-md-3">
+            <div class="card card-body">
+                <h1>Export Settings</h1>
+                <table class="table table-sm">
+                    <tr>
+                        <th><h4>Export Pixel Data</h5></th>
+                        <th><a class="btn btn-info" href="{%url 'export' 'pixel'%}">Export</a></th>
+                    </tr>
+                    <tr>
+                        <th><h4>Export Universe Data</h4></th>
+                        <th><a class="btn btn-info" href="{%url 'export' 'universe'%}">Export</a></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class=" col-md-6">
+            <div class="card card-body">
+                <h1>Import Settings</h1>
+                <table class="table table-sm">
+                    <tr>
+                        <th><h4>Import Pixel Data</h5></th>
+                        <th>
+                            <form action="{% url 'pixelupload' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-md-2 justify-content-right">
+                                        <label for="file1"> Upload a file</label>
+                                    </div>
+                                    <div class="form-group col">
+                                        <input class="form-control-file" type="file" id="file1" name="file">
+                                    </div>
+                                    <div class="form-group col my-auto justify-content-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModalPixel">Upload</button>
+                                    </div>
+                                    <div class="modal fade" id="confirmModalPixel" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              This action will overwrite the database with the contents of the csv.
+                                              Please backup you current settings before proceeding.
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+                                              <button type="submit" class="btn btn-primary">Proceed</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    
+                                </div>
+                            </form>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th><h4>Import Universe Data</h5></th>
+                        <th>
+                            <form action="{% url 'uniupload' %}" method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-md-2 justify-content-right">
+                                        <label for="file1"> Upload a file</label>
+                                    </div>
+                                    <div class="form-group col">
+                                        <input class="form-control-file" type="file" id="file1" name="file">
+                                    </div>
+                                    <div class="form-group col my-auto justify-content-center">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModalUniverse">Upload</button>
+                                    </div>
+                                    <div class="modal fade" id="confirmModalUniverse" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              This action will overwrite the database with the contents of the csv.
+                                              Please backup you current settings before proceeding.
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Go Back</button>
+                                              <button type="submit" class="btn btn-primary">Proceed</button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                </form>
+                                </div>
+                                
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 {% endblock %}
